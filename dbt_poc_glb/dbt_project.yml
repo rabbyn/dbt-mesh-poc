@@ -1,0 +1,26 @@
+name: dbt_poc_glb
+version: '1.0.0'
+config-version: 2
+profile: poc_glb
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  dbt_poc_glb:
+    gold:
+      +materialized: table
+      +tags: []
+      sales:
+        +database: gold_wh_glb_sales
+        +schema: sales
+        +tags: ["sales_domain"]
+      finance:
+        +database: gold_wh_glb_finance
+        +schema: finance
+        +tags: ["finance_domain"]

@@ -1,0 +1,18 @@
+# Global - dbt-fabric adapter (Warehouse via T-SQL/TDS)
+# Auth: ServicePrincipal (Workspace Admin on all 3 workspaces)
+poc_glb:
+  target: dev
+  outputs:
+    dev:
+      type: fabric
+      driver: "ODBC Driver 18 for SQL Server"
+      server: "{{ env_var('FABRIC_WH_GLB_SERVER') }}"
+      database: gold_wh_glb_sales
+      port: 1433
+      schema: dbo
+      authentication: ServicePrincipal
+      tenant_id: "{{ env_var('FABRIC_TENANT_ID') }}"
+      client_id: "{{ env_var('FABRIC_SPN_CLIENT_ID') }}"
+      client_secret: "{{ env_var('FABRIC_SPN_CLIENT_SECRET') }}"
+      encrypt: true
+      trust_cert: false

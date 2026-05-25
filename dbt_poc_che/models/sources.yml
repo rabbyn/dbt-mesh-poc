@@ -1,0 +1,77 @@
+version: 2
+
+sources:
+  - name: bronze_sales
+    description: "Raw sales domain data from Switzerland Bronze warehouse"
+    database: bronze_wh_che
+    schema: sales
+    tables:
+      - name: client
+        description: "Raw client master data"
+        columns:
+          - name: client_id
+            data_tests: [unique, not_null]
+          - name: client_name
+          - name: client_type
+          - name: country_code
+          - name: created_at
+
+      - name: branch
+        description: "Raw branch master data"
+        columns:
+          - name: branch_id
+            data_tests: [unique, not_null]
+          - name: branch_name
+          - name: branch_city
+          - name: branch_region
+          - name: is_active
+
+      - name: sales_order
+        description: "Raw transactional sales orders"
+        columns:
+          - name: order_id
+            data_tests: [unique, not_null]
+          - name: client_id
+          - name: branch_id
+          - name: order_date
+          - name: amount
+          - name: currency_code
+          - name: order_status
+
+  - name: bronze_finance
+    description: "Raw finance domain data from Switzerland Bronze warehouse"
+    database: bronze_wh_che
+    schema: finance
+    tables:
+      - name: account
+        description: "Raw chart of accounts"
+        columns:
+          - name: account_id
+            data_tests: [unique, not_null]
+          - name: account_name
+          - name: account_type
+          - name: account_category
+          - name: is_active
+
+      - name: cost_center
+        description: "Raw cost center master data"
+        columns:
+          - name: cost_center_id
+            data_tests: [unique, not_null]
+          - name: cost_center_name
+          - name: department
+          - name: manager_name
+          - name: is_active
+
+      - name: journal_entry
+        description: "Raw journal entry transactions"
+        columns:
+          - name: entry_id
+            data_tests: [unique, not_null]
+          - name: account_id
+          - name: cost_center_id
+          - name: entry_date
+          - name: debit_amount
+          - name: credit_amount
+          - name: currency_code
+          - name: description

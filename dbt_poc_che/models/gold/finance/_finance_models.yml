@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: dim_account
+    description: "Account dimension - Switzerland"
+    access: public
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: account_id
+        data_type: int
+        data_tests: [unique, not_null]
+      - name: account_name
+        data_type: varchar(200)
+      - name: account_type
+        data_type: varchar(50)
+      - name: account_category
+        data_type: varchar(50)
+      - name: source_country
+        data_type: varchar(3)
+      - name: is_active
+        data_type: bit
+      - name: _loaded_at
+        data_type: datetime2
+
+  - name: dim_cost_center
+    description: "Cost center dimension - Switzerland"
+    access: public
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: cost_center_id
+        data_type: int
+        data_tests: [unique, not_null]
+      - name: cost_center_name
+        data_type: varchar(200)
+      - name: department
+        data_type: varchar(100)
+      - name: manager_name
+        data_type: varchar(200)
+      - name: source_country
+        data_type: varchar(3)
+      - name: is_active
+        data_type: bit
+      - name: _loaded_at
+        data_type: datetime2
+
+  - name: fct_journal_entry
+    description: "Journal entry fact table - Switzerland"
+    access: public
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: entry_id
+        data_type: int
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_type: int
+        data_tests: [not_null]
+      - name: cost_center_id
+        data_type: int
+        data_tests: [not_null]
+      - name: entry_date
+        data_type: date
+      - name: debit_amount
+        data_type: decimal(18,2)
+      - name: credit_amount
+        data_type: decimal(18,2)
+      - name: currency_code
+        data_type: varchar(3)
+      - name: description
+        data_type: varchar(500)
+      - name: source_country
+        data_type: varchar(3)
+      - name: _loaded_at
+        data_type: datetime2

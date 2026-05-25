@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# dbt
+**/target/
+**/dbt_packages/
+**/logs/
+
+# Environment
+.env
+
+# IDE
+.vscode/settings.json
+
+# OS
+Thumbs.db
+.DS_Store

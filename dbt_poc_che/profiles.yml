@@ -1,0 +1,18 @@
+# Switzerland - dbt-fabric adapter (Warehouse via T-SQL/TDS)
+# Auth: ServicePrincipal (Workspace Admin)
+poc_che:
+  target: dev
+  outputs:
+    dev:
+      type: fabric
+      driver: "ODBC Driver 18 for SQL Server"
+      server: "{{ env_var('FABRIC_WH_CHE_SERVER') }}"
+      database: silver_wh_che
+      port: 1433
+      schema: dbo
+      authentication: ServicePrincipal
+      tenant_id: "{{ env_var('FABRIC_TENANT_ID') }}"
+      client_id: "{{ env_var('FABRIC_SPN_CLIENT_ID') }}"
+      client_secret: "{{ env_var('FABRIC_SPN_CLIENT_SECRET') }}"
+      encrypt: true
+      trust_cert: false

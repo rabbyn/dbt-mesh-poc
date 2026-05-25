@@ -1,0 +1,51 @@
+version: 2
+
+# Upstream gold tables from country projects, accessible via OneLake schema shortcuts.
+# Architecture: two staging lakehouses in EMEA_GDP_DBT_POC_GLB hold schema shortcuts
+# pointing to the upstream workspaces. The Warehouse SQL engine resolves cross-database
+# references to these lakehouse SQL analytics endpoints within the same workspace.
+#
+#   stg_lh_glb_finance
+#     ita_gold  ->  EMEA_GDP_DBT_POC_ITA / gold_lh_ita / finance schema
+#     che_gold  ->  EMEA_GDP_DBT_POC_CHE / gold_wh_che / dbo_finance schema
+#
+#   stg_lh_glb_sales
+#     ita_gold  ->  EMEA_GDP_DBT_POC_ITA / gold_lh_ita / sales schema
+#     che_gold  ->  EMEA_GDP_DBT_POC_CHE / gold_wh_che / dbo_sales schema
+
+sources:
+  - name: ita_gold_finance
+    description: "Italy gold finance layer (via schema shortcut in stg_lh_glb_finance -> gold_lh_ita.finance)"
+    database: stg_lh_glb_finance
+    schema: gold_ita_finance
+    tables:
+      - name: dim_account
+      - name: dim_cost_center
+      - name: fct_journal_entry
+
+  - name: ita_gold_sales
+    description: "Italy gold sales layer (via schema shortcut in stg_lh_glb_sales -> gold_lh_ita.sales)"
+    database: stg_lh_glb_sales
+    schema: gold_ita_sales
+    tables:
+      - name: dim_client
+      - name: dim_branch
+      - name: fct_sales_order
+
+  - name: che_gold_finance
+    description: "Switzerland gold finance layer (via schema shortcut in stg_lh_glb_finance -> gold_wh_che.dbo_finance)"
+    database: stg_lh_glb_finance
+    schema: gold_che_finance
+    tables:
+      - name: dim_account
+      - name: dim_cost_center
+      - name: fct_journal_entry
+
+  - name: che_gold_sales
+    description: "Switzerland gold sales layer (via schema shortcut in stg_lh_glb_sales -> gold_wh_che.dbo_sales)"
+    database: stg_lh_glb_sales
+    schema: gold_che_sales
+    tables:
+      - name: dim_client
+      - name: dim_branch
+      - name: fct_sales_order

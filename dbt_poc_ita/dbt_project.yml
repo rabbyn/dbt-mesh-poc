@@ -1,0 +1,35 @@
+name: dbt_poc_ita
+version: '1.0.0'
+config-version: 2
+profile: poc_ita
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  dbt_poc_ita:
+    silver:
+      +database: silver_lh_ita
+      +materialized: table
+      +tags: []
+      sales:
+        +schema: sales
+        +tags: ["sales_domain"]
+      finance:
+        +schema: finance
+        +tags: ["finance_domain"]
+    gold:
+      +database: gold_lh_ita
+      +materialized: table
+      +tags: []
+      sales:
+        +schema: sales
+        +tags: ["sales_domain"]
+      finance:
+        +schema: finance
+        +tags: ["finance_domain"]

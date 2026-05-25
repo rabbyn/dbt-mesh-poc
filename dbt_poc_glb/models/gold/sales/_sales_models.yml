@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_client_global
+    description: "Global client dimension - union of all countries"
+    columns:
+      - name: client_id
+        data_type: int
+        data_tests: [not_null]
+      - name: client_name
+        data_type: varchar(200)
+      - name: client_type
+        data_type: varchar(50)
+      - name: country_code
+        data_type: varchar(3)
+      - name: source_country
+        data_type: varchar(3)
+        data_tests: [not_null]
+      - name: created_at
+        data_type: datetime2
+      - name: _loaded_at
+        data_type: datetime2
+
+  - name: dim_branch_global
+    description: "Global branch dimension - union of all countries"
+    columns:
+      - name: branch_id
+        data_type: int
+        data_tests: [not_null]
+      - name: branch_name
+        data_type: varchar(200)
+      - name: branch_city
+        data_type: varchar(100)
+      - name: branch_region
+        data_type: varchar(100)
+      - name: source_country
+        data_type: varchar(3)
+        data_tests: [not_null]
+      - name: is_active
+        data_type: bit
+      - name: _loaded_at
+        data_type: datetime2
+
+  - name: fct_sales_order_global
+    description: "Global sales order fact table - union of all countries"
+    columns:
+      - name: order_id
+        data_type: int
+        data_tests: [not_null]
+      - name: client_id
+        data_type: int
+        data_tests: [not_null]
+      - name: branch_id
+        data_type: int
+        data_tests: [not_null]
+      - name: order_date
+        data_type: date
+      - name: amount
+        data_type: decimal(18,2)
+      - name: currency_code
+        data_type: varchar(3)
+      - name: order_status
+        data_type: varchar(50)
+      - name: source_country
+        data_type: varchar(3)
+        data_tests: [not_null]
+      - name: _loaded_at
+        data_type: datetime2
