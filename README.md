@@ -1,6 +1,6 @@
 # dbt Mesh PoC — Microsoft Fabric
 
-A proof-of-concept implementing a **dbt Mesh** architecture on Microsoft Fabric, demonstrating multi-project, multi-country data transformation pipelines converging into a global layer.
+A **dbt Mesh** implementation across Microsoft Fabric Warehouse and Lakehouse — demonstrating cross-adapter, multi-domain data governance at scale. The mesh spans two dbt adapters (`dbt-fabric` for T-SQL Warehouses and `dbt-fabricspark` for Spark Lakehouses), two country-level projects, and a global aggregation layer consuming upstream gold models via OneLake shortcuts.
 
 ## Overview
 
