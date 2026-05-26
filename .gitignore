@@ -8,6 +8,9 @@ __pycache__/
 **/dbt_packages/
 **/logs/
 
+# Documentation
+documentation/
+
 # Environment
 .env
 
