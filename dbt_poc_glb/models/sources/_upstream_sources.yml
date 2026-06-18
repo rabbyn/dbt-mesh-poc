@@ -20,8 +20,62 @@ sources:
     schema: gold_ita_finance
     tables:
       - name: dim_account
+        description: "Italy gold account dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: account_id
+            description: "Unique identifier for the account within Italy"
+          - name: account_name
+            description: "Full descriptive name of the general ledger account"
+          - name: account_type
+            description: "High-level classification of the account (e.g., ASSET, LIABILITY, REVENUE, EXPENSE)"
+          - name: account_category
+            description: "Sub-category for grouping accounts within a type"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: is_active
+            description: "Flag indicating whether the account is currently active"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: dim_cost_center
+        description: "Italy gold cost center dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: cost_center_id
+            description: "Unique identifier for the cost center within Italy"
+          - name: cost_center_name
+            description: "Full descriptive name of the cost center"
+          - name: department
+            description: "Business department the cost center belongs to"
+          - name: manager_name
+            description: "Full name of the person responsible for the cost center"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: is_active
+            description: "Flag indicating whether the cost center is currently active"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: fct_journal_entry
+        description: "Italy gold journal entry fact table (read-only via OneLake shortcut)"
+        columns:
+          - name: entry_id
+            description: "Unique identifier for the journal entry line within Italy"
+          - name: account_id
+            description: "Foreign key to the account dimension within Italy"
+          - name: cost_center_id
+            description: "Foreign key to the cost center dimension within Italy"
+          - name: entry_date
+            description: "Business date on which the accounting entry was posted"
+          - name: debit_amount
+            description: "Debit amount for this entry line in the transaction currency"
+          - name: credit_amount
+            description: "Credit amount for this entry line in the transaction currency"
+          - name: currency_code
+            description: "ISO 4217 three-letter currency code for the amounts"
+          - name: description
+            description: "Free-text narrative describing the purpose of the journal entry"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
 
   - name: ita_gold_sales
     description: "Italy gold sales layer (via schema shortcut in stg_lh_glb_sales -> gold_lh_ita.sales)"
@@ -29,8 +83,60 @@ sources:
     schema: gold_ita_sales
     tables:
       - name: dim_client
+        description: "Italy gold client dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: client_id
+            description: "Unique identifier for the client within Italy"
+          - name: client_name
+            description: "Full commercial or legal name of the client"
+          - name: client_type
+            description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)"
+          - name: country_code
+            description: "ISO 3166-1 alpha-2 code of the client's country of registration"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: created_at
+            description: "Timestamp when the client record was originally created in the source system"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: dim_branch
+        description: "Italy gold branch dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: branch_id
+            description: "Unique identifier for the branch office within Italy"
+          - name: branch_name
+            description: "Full name of the branch office"
+          - name: branch_city
+            description: "City where the branch office is located"
+          - name: branch_region
+            description: "Regional area or district the branch belongs to"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: is_active
+            description: "Flag indicating whether the branch is currently operational"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: fct_sales_order
+        description: "Italy gold sales order fact table (read-only via OneLake shortcut)"
+        columns:
+          - name: order_id
+            description: "Unique identifier for the sales order within Italy"
+          - name: client_id
+            description: "Foreign key to the client dimension within Italy"
+          - name: branch_id
+            description: "Foreign key to the branch dimension within Italy"
+          - name: order_date
+            description: "Business date when the sales order was placed"
+          - name: amount
+            description: "Total monetary value of the sales order in the transaction currency"
+          - name: currency_code
+            description: "ISO 4217 three-letter currency code for the order amount"
+          - name: order_status
+            description: "Current lifecycle status of the order"
+          - name: source_country
+            description: "Always ITA for this source"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
 
   - name: che_gold_finance
     description: "Switzerland gold finance layer (via schema shortcut in stg_lh_glb_finance -> gold_wh_che.dbo_finance)"
@@ -38,8 +144,62 @@ sources:
     schema: gold_che_finance
     tables:
       - name: dim_account
+        description: "Switzerland gold account dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: account_id
+            description: "Unique identifier for the account within Switzerland"
+          - name: account_name
+            description: "Full descriptive name of the general ledger account"
+          - name: account_type
+            description: "High-level classification of the account (e.g., ASSET, LIABILITY, REVENUE, EXPENSE)"
+          - name: account_category
+            description: "Sub-category for grouping accounts within a type"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: is_active
+            description: "Flag indicating whether the account is currently active"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: dim_cost_center
+        description: "Switzerland gold cost center dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: cost_center_id
+            description: "Unique identifier for the cost center within Switzerland"
+          - name: cost_center_name
+            description: "Full descriptive name of the cost center"
+          - name: department
+            description: "Business department the cost center belongs to"
+          - name: manager_name
+            description: "Full name of the person responsible for the cost center"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: is_active
+            description: "Flag indicating whether the cost center is currently active"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: fct_journal_entry
+        description: "Switzerland gold journal entry fact table (read-only via OneLake shortcut)"
+        columns:
+          - name: entry_id
+            description: "Unique identifier for the journal entry line within Switzerland"
+          - name: account_id
+            description: "Foreign key to the account dimension within Switzerland"
+          - name: cost_center_id
+            description: "Foreign key to the cost center dimension within Switzerland"
+          - name: entry_date
+            description: "Business date on which the accounting entry was posted"
+          - name: debit_amount
+            description: "Debit amount for this entry line in the transaction currency"
+          - name: credit_amount
+            description: "Credit amount for this entry line in the transaction currency"
+          - name: currency_code
+            description: "ISO 4217 three-letter currency code for the amounts"
+          - name: description
+            description: "Free-text narrative describing the purpose of the journal entry"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
 
   - name: che_gold_sales
     description: "Switzerland gold sales layer (via schema shortcut in stg_lh_glb_sales -> gold_wh_che.dbo_sales)"
@@ -47,5 +207,57 @@ sources:
     schema: gold_che_sales
     tables:
       - name: dim_client
+        description: "Switzerland gold client dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: client_id
+            description: "Unique identifier for the client within Switzerland"
+          - name: client_name
+            description: "Full commercial or legal name of the client"
+          - name: client_type
+            description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)"
+          - name: country_code
+            description: "ISO 3166-1 alpha-2 code of the client's country of registration"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: created_at
+            description: "Timestamp when the client record was originally created in the source system"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: dim_branch
+        description: "Switzerland gold branch dimension (read-only via OneLake shortcut)"
+        columns:
+          - name: branch_id
+            description: "Unique identifier for the branch office within Switzerland"
+          - name: branch_name
+            description: "Full name of the branch office"
+          - name: branch_city
+            description: "City where the branch office is located"
+          - name: branch_region
+            description: "Regional area or district the branch belongs to"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: is_active
+            description: "Flag indicating whether the branch is currently operational"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"
       - name: fct_sales_order
+        description: "Switzerland gold sales order fact table (read-only via OneLake shortcut)"
+        columns:
+          - name: order_id
+            description: "Unique identifier for the sales order within Switzerland"
+          - name: client_id
+            description: "Foreign key to the client dimension within Switzerland"
+          - name: branch_id
+            description: "Foreign key to the branch dimension within Switzerland"
+          - name: order_date
+            description: "Business date when the sales order was placed"
+          - name: amount
+            description: "Total monetary value of the sales order in the transaction currency"
+          - name: currency_code
+            description: "ISO 4217 three-letter currency code for the order amount"
+          - name: order_status
+            description: "Current lifecycle status of the order"
+          - name: source_country
+            description: "Always CHE for this source"
+          - name: _loaded_at
+            description: "UTC timestamp when the record was last loaded"

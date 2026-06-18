@@ -5,66 +5,90 @@ models:
     description: "Global account dimension - union of all countries"
     columns:
       - name: account_id
+        description: "Unique identifier for the general ledger account within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: account_name
+        description: "Full descriptive name of the general ledger account"
         data_type: varchar(200)
       - name: account_type
+        description: "High-level classification of the account (e.g., ASSET, LIABILITY, REVENUE, EXPENSE)"
         data_type: varchar(50)
       - name: account_category
+        description: "Sub-category for grouping accounts within a type (e.g., CURRENT_ASSET, OPERATING_EXPENSE)"
         data_type: varchar(50)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with account_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: is_active
+        description: "Flag indicating whether the account is currently active (1 = active, 0 = inactive)"
         data_type: bit
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2
 
   - name: dim_cost_center_global
     description: "Global cost center dimension - union of all countries"
     columns:
       - name: cost_center_id
+        description: "Unique identifier for the cost center within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: cost_center_name
+        description: "Full descriptive name of the cost center"
         data_type: varchar(200)
       - name: department
+        description: "Business department the cost center belongs to"
         data_type: varchar(100)
       - name: manager_name
+        description: "Full name of the person responsible for the cost center"
         data_type: varchar(200)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with cost_center_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: is_active
+        description: "Flag indicating whether the cost center is currently active (1 = active, 0 = inactive)"
         data_type: bit
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2
 
   - name: fct_journal_entry_global
     description: "Global journal entry fact table - union of all countries"
     columns:
       - name: entry_id
+        description: "Unique identifier for the journal entry line within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: account_id
+        description: "Foreign key to dim_account_global; links the entry to a general ledger account within the same source country"
         data_type: int
         data_tests: [not_null]
       - name: cost_center_id
+        description: "Foreign key to dim_cost_center_global; links the entry to a cost center within the same source country"
         data_type: int
         data_tests: [not_null]
       - name: entry_date
+        description: "Business date on which the accounting entry was posted"
         data_type: date
       - name: debit_amount
+        description: "Debit amount for this entry line in the transaction currency"
         data_type: decimal(18,2)
       - name: credit_amount
+        description: "Credit amount for this entry line in the transaction currency"
         data_type: decimal(18,2)
       - name: currency_code
+        description: "ISO 4217 three-letter currency code for the amounts (e.g., CHF, EUR, USD)"
         data_type: varchar(3)
       - name: description
+        description: "Free-text narrative describing the purpose or context of the journal entry"
         data_type: varchar(500)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with entry_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2

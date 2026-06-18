@@ -10,42 +10,56 @@ sources:
         description: "Raw client master data"
         columns:
           - name: client_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the client"
             data_tests:
               - unique
               - not_null
           - name: client_name
+            description: "Full commercial or legal name of the client"
           - name: client_type
+            description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)"
           - name: country_code
+            description: "ISO 3166-1 alpha-2 code of the client's country of registration"
           - name: created_at
+            description: "Timestamp when the client record was originally created in the source system"
 
       - name: branch
         description: "Raw branch master data"
         columns:
           - name: branch_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the branch office"
             data_tests:
               - unique
               - not_null
           - name: branch_name
+            description: "Full name of the branch office"
           - name: branch_city
+            description: "City where the branch office is located"
           - name: branch_region
+            description: "Regional area or district the branch belongs to"
           - name: is_active
+            description: "Flag indicating whether the branch is currently operational"
 
       - name: sales_order
         description: "Raw transactional sales orders"
         columns:
           - name: order_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the sales order"
             data_tests:
               - unique
               - not_null
           - name: client_id
+            description: "Foreign key referencing the client who placed the order"
           - name: branch_id
+            description: "Foreign key referencing the branch that processed the order"
           - name: order_date
+            description: "Business date when the sales order was placed"
           - name: amount
+            description: "Total monetary value of the sales order"
           - name: currency_code
+            description: "ISO 4217 three-letter currency code for the order amount"
           - name: order_status
+            description: "Current lifecycle status of the order (e.g., OPEN, CONFIRMED, CLOSED, CANCELLED)"
 
   - name: bronze_finance
     description: "Raw finance domain data from Italy Bronze Lakehouse"
@@ -56,40 +70,55 @@ sources:
         description: "Raw chart of accounts"
         columns:
           - name: account_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the general ledger account"
             data_tests:
               - unique
               - not_null
           - name: account_name
+            description: "Full descriptive name of the general ledger account"
           - name: account_type
+            description: "High-level classification of the account (e.g., ASSET, LIABILITY, REVENUE, EXPENSE)"
           - name: account_category
+            description: "Sub-category for grouping accounts within a type"
           - name: is_active
+            description: "Flag indicating whether the account is currently active"
 
       - name: cost_center
         description: "Raw cost center master data"
         columns:
           - name: cost_center_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the cost center"
             data_tests:
               - unique
               - not_null
           - name: cost_center_name
+            description: "Full descriptive name of the cost center"
           - name: department
+            description: "Business department the cost center belongs to"
           - name: manager_name
+            description: "Full name of the person responsible for the cost center"
           - name: is_active
+            description: "Flag indicating whether the cost center is currently active"
 
       - name: journal_entry
         description: "Raw journal entry transactions"
         columns:
           - name: entry_id
-            description: "Primary key"
+            description: "Primary key - unique identifier for the journal entry line"
             data_tests:
               - unique
               - not_null
           - name: account_id
+            description: "Foreign key referencing the general ledger account for this entry"
           - name: cost_center_id
+            description: "Foreign key referencing the cost center charged by this entry"
           - name: entry_date
+            description: "Business date on which the accounting entry was posted"
           - name: debit_amount
+            description: "Debit amount for this entry line in the transaction currency"
           - name: credit_amount
+            description: "Credit amount for this entry line in the transaction currency"
           - name: currency_code
+            description: "ISO 4217 three-letter currency code for the amounts"
           - name: description
+            description: "Free-text narrative describing the purpose of the journal entry"

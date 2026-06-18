@@ -5,64 +5,87 @@ models:
     description: "Global client dimension - union of all countries"
     columns:
       - name: client_id
+        description: "Unique identifier for the client within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: client_name
+        description: "Full commercial or legal name of the client"
         data_type: varchar(200)
       - name: client_type
+        description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)"
         data_type: varchar(50)
       - name: country_code
+        description: "ISO 3166-1 alpha-2 code of the client's country of registration"
         data_type: varchar(3)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with client_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: created_at
+        description: "Timestamp when the client record was originally created in the source system"
         data_type: datetime2
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2
 
   - name: dim_branch_global
     description: "Global branch dimension - union of all countries"
     columns:
       - name: branch_id
+        description: "Unique identifier for the branch office within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: branch_name
+        description: "Full name of the branch office"
         data_type: varchar(200)
       - name: branch_city
+        description: "City where the branch office is located"
         data_type: varchar(100)
       - name: branch_region
+        description: "Regional area or district the branch belongs to"
         data_type: varchar(100)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with branch_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: is_active
+        description: "Flag indicating whether the branch is currently operational (1 = active, 0 = inactive)"
         data_type: bit
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2
 
   - name: fct_sales_order_global
     description: "Global sales order fact table - union of all countries"
     columns:
       - name: order_id
+        description: "Unique identifier for the sales order within its source country (not globally unique alone — use with source_country)"
         data_type: int
         data_tests: [not_null]
       - name: client_id
+        description: "Foreign key to dim_client_global; links the order to the purchasing client within the same source country"
         data_type: int
         data_tests: [not_null]
       - name: branch_id
+        description: "Foreign key to dim_branch_global; links the order to the branch that placed it within the same source country"
         data_type: int
         data_tests: [not_null]
       - name: order_date
+        description: "Business date when the sales order was placed"
         data_type: date
       - name: amount
+        description: "Total monetary value of the sales order in the transaction currency"
         data_type: decimal(18,2)
       - name: currency_code
+        description: "ISO 4217 three-letter currency code for the order amount (e.g., CHF, EUR)"
         data_type: varchar(3)
       - name: order_status
+        description: "Current lifecycle status of the order (e.g., OPEN, CONFIRMED, CLOSED, CANCELLED)"
         data_type: varchar(50)
       - name: source_country
+        description: "ISO 3166-1 alpha-3 code identifying the originating country entity (e.g., CHE, ITA); use with order_id for global uniqueness"
         data_type: varchar(3)
         data_tests: [not_null]
       - name: _loaded_at
+        description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2
