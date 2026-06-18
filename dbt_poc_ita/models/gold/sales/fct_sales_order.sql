@@ -16,6 +16,6 @@ select
     o.currency_code,
     o.order_status,
     'ITA' as source_country,
-    current_timestamp() as _loaded_at
+    CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 from {{ ref('stg_sales_order') }} o
 where o.order_status is not null

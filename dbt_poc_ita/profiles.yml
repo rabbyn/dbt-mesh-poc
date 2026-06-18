@@ -1,21 +1,18 @@
-# Italy - dbt-fabricspark adapter (Lakehouse via Spark/Livy)
-# Auth: Service Principal (tenant_id / client_id / client_secret via .env)
+# Italy - dbt-fabric adapter (Warehouse via T-SQL/TDS)
+# Auth: ServicePrincipal (Workspace Admin)
 poc_ita:
   target: dev
   outputs:
     dev:
-      type: fabricspark
-      method: livy
-      authentication: serviceprincipal
+      type: fabric
+      driver: "ODBC Driver 18 for SQL Server"
+      server: "{{ env_var('FABRIC_WH_ITA_SERVER') }}"
+      database: silver_wh_ita
+      port: 1433
+      schema: dbo
+      authentication: ServicePrincipal
       tenant_id: "{{ env_var('FABRIC_TENANT_ID') }}"
       client_id: "{{ env_var('FABRIC_SPN_CLIENT_ID') }}"
       client_secret: "{{ env_var('FABRIC_SPN_CLIENT_SECRET') }}"
-      workspaceid: "{{ env_var('FABRIC_WS_ITA_ID') }}"
-      lakehouseid: "{{ env_var('FABRIC_LH_ITA_SILVER_ID') }}"
-      lakehouse: silver_lh_ita
-      schema: dbo
-      connect_retries: 3
-      connect_timeout: 10
-      retry_all: true
-      spark_config:
-        name: dbt_poc_ita_session
+      encrypt: true
+      trust_cert: false

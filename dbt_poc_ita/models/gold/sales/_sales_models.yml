@@ -14,22 +14,22 @@ models:
         data_tests: [unique, not_null]
       - name: client_name
         description: "Full commercial or legal name of the client"
-        data_type: string
+        data_type: varchar(200)
       - name: client_type
         description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)"
-        data_type: string
+        data_type: varchar(50)
       - name: country_code
         description: "ISO 3166-1 alpha-2 code of the client's country of registration"
-        data_type: string
+        data_type: varchar(3)
       - name: source_country
         description: "ISO 3166-1 alpha-3 code identifying the originating country entity (always ITA here)"
-        data_type: string
+        data_type: varchar(3)
       - name: created_at
         description: "Timestamp when the client record was originally created in the source system"
-        data_type: timestamp
+        data_type: datetime2(6)
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: timestamp
+        data_type: datetime2(6)
 
   - name: dim_branch
     description: "Branch dimension - Italy"
@@ -44,22 +44,22 @@ models:
         data_tests: [unique, not_null]
       - name: branch_name
         description: "Full name of the branch office"
-        data_type: string
+        data_type: varchar(200)
       - name: branch_city
         description: "City where the branch office is located"
-        data_type: string
+        data_type: varchar(100)
       - name: branch_region
         description: "Regional area or district the branch belongs to"
-        data_type: string
+        data_type: varchar(100)
       - name: source_country
         description: "ISO 3166-1 alpha-3 code identifying the originating country entity (always ITA here)"
-        data_type: string
+        data_type: varchar(3)
       - name: is_active
-        description: "Flag indicating whether the branch is currently operational (true = active, false = inactive)"
-        data_type: boolean
+        description: "Flag indicating whether the branch is currently operational (1 = active, 0 = inactive)"
+        data_type: bit
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: timestamp
+        data_type: datetime2(6)
 
   - name: fct_sales_order
     description: "Sales order fact table - Italy"
@@ -88,13 +88,13 @@ models:
         data_type: decimal(18,2)
       - name: currency_code
         description: "ISO 4217 three-letter currency code for the order amount (e.g., CHF, EUR)"
-        data_type: string
+        data_type: varchar(3)
       - name: order_status
         description: "Current lifecycle status of the order (e.g., OPEN, CONFIRMED, CLOSED, CANCELLED)"
-        data_type: string
+        data_type: varchar(50)
       - name: source_country
         description: "ISO 3166-1 alpha-3 code identifying the originating country entity (always ITA here)"
-        data_type: string
+        data_type: varchar(3)
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: timestamp
+        data_type: datetime2(6)

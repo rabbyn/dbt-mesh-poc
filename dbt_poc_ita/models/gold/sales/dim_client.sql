@@ -14,6 +14,6 @@ select
     country_code,
     'ITA' as source_country,
     created_at,
-    current_timestamp() as _loaded_at
+    CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 from {{ ref('stg_client') }}
 where country_code is not null

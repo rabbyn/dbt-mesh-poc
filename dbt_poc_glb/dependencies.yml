@@ -1,0 +1,5 @@
+# Native dbt Mesh: declare upstream projects for cross-project ref()
+# Global consumes public gold models from Italy and Switzerland.
+projects:
+  - name: dbt_poc_ita
+  - name: dbt_poc_che

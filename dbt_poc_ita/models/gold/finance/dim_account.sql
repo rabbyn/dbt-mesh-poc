@@ -14,5 +14,5 @@ select
     account_category,
     'ITA' as source_country,
     is_active,
-    current_timestamp() as _loaded_at
+    CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 from {{ ref('stg_account') }}

@@ -9,7 +9,7 @@ select
     source_country,
     created_at,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('ita_gold_sales', 'dim_client') }}
+from {{ ref('dbt_poc_ita', 'dim_client') }}
 
 union all
 
@@ -21,4 +21,4 @@ select
     source_country,
     created_at,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('che_gold_sales', 'dim_client') }}
+from {{ ref('dbt_poc_che', 'dim_client') }}

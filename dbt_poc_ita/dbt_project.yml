@@ -14,7 +14,7 @@ clean-targets: ["target", "dbt_packages"]
 models:
   dbt_poc_ita:
     silver:
-      +database: silver_lh_ita
+      +database: silver_wh_ita
       +materialized: table
       +tags: []
       sales:
@@ -24,7 +24,7 @@ models:
         +schema: finance
         +tags: ["finance_domain"]
     gold:
-      +database: gold_lh_ita
+      +database: gold_wh_ita
       +materialized: table
       +tags: []
       sales:

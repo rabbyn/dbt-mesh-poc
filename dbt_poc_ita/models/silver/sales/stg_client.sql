@@ -1,10 +1,10 @@
--- Silver: Cleaned and typed client master data
+-- Silver: Cleaned and typed client master data (T-SQL)
 select
     cast(client_id as int) as client_id,
-    trim(client_name) as client_name,
-    upper(trim(client_type)) as client_type,
-    upper(trim(country_code)) as country_code,
-    cast(created_at as timestamp) as created_at,
-    current_timestamp() as _loaded_at
+    ltrim(rtrim(client_name)) as client_name,
+    upper(ltrim(rtrim(client_type))) as client_type,
+    upper(ltrim(rtrim(country_code))) as country_code,
+    cast(created_at as datetime2(6)) as created_at,
+    CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 from {{ source('bronze_sales', 'client') }}
 where client_id is not null

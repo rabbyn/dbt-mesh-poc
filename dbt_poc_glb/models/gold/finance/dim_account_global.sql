@@ -1,7 +1,7 @@
 {{ config(materialized='table') }}
 
 -- Global Gold: Union of Italy and Switzerland account dimensions
--- Sources reference upstream gold tables exposed via Fabric shortcuts
+-- Native dbt Mesh: cross-project ref() to public upstream gold models
 select
     account_id,
     account_name,
@@ -10,7 +10,7 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('ita_gold_finance', 'dim_account') }}
+from {{ ref('dbt_poc_ita', 'dim_account') }}
 
 union all
 
@@ -22,4 +22,4 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('che_gold_finance', 'dim_account') }}
+from {{ ref('dbt_poc_che', 'dim_account') }}
