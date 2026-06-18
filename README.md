@@ -1,6 +1,17 @@
-# dbt Mesh PoC — Microsoft Fabric
+# dbt Mesh PoC — Microsoft Fabric (dbt-core variant)
 
 A **dbt Mesh** implementation across Microsoft Fabric Warehouse and Lakehouse — demonstrating cross-adapter, multi-domain data governance at scale. The mesh spans two dbt adapters (`dbt-fabric` for T-SQL Warehouses and `dbt-fabricspark` for Spark Lakehouses), two country-level projects, and a global aggregation layer consuming upstream gold models via OneLake shortcuts.
+
+## Two implementation variants
+
+This project is maintained in **two parallel variants**, one per branch, so the same data model can run on either runtime:
+
+| Branch | Runtime | Cross-project mechanism | Italy adapter |
+|---|---|---|---|
+| `main-core` *(this branch)* | **dbt-core** (open-source CLI) | **dbt-loom** resolves cross-project refs from local manifests | `dbt-fabricspark` (Spark/Livy on Lakehouses) |
+| `main-cloud` | **dbt Cloud** | **native dbt Mesh** — `dependencies.yml` + `ref('project','model')` | `dbt-fabric` (T-SQL on Warehouses) |
+
+> **Note on Italy:** dbt Cloud does **not yet support the `dbt-fabricspark` adapter**. On the `main-cloud` branch the Italy project was therefore refactored to run on the `dbt-fabric` (T-SQL) adapter against Fabric Warehouses. This `main-core` branch keeps the original `dbt-fabricspark` (Spark/Livy on Lakehouse) implementation for local dbt-core runs.
 
 ## Overview
 
