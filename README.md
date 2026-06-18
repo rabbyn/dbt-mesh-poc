@@ -40,12 +40,12 @@ dbt_poc_ita (Italy)          dbt_poc_che (Switzerland)
               Gold WH (Finance)
 ```
 
-### Cross-project integration (native dbt Mesh)
+### Cross-project integration (dbt Mesh + Fabric Shortcuts)
 
-- `dbt_poc_glb/dependencies.yml` declares the upstream projects `dbt_poc_ita` and `dbt_poc_che`.
-- Global gold models reference upstream public models directly, e.g. `from {{ ref('dbt_poc_ita', 'dim_account') }}`.
+- `dbt_poc_glb/dependencies.yml` declares the upstream projects `dbt_poc_ita` and `dbt_poc_che` for dbt Cloud Mesh governance.
 - Upstream gold models are exposed with `access: public` and `contract: { enforced: true }`.
-- Cross-project lineage and orchestration are handled by **dbt Cloud** (cross-project `ref()` does not resolve under local dbt-core on this branch — that is by design; use `main-core` for local runs).
+- **Fabric cross-workspace constraint:** Fabric Warehouse does not support direct cross-workspace SQL queries. Native dbt Mesh `ref('dbt_poc_ita', '...')` would generate SQL like `gold_wh_ita.dbo_finance.dim_account` which Fabric rejects (different workspace). The GLB models therefore use `source()` routing through **Fabric Shortcuts** in the GLB workspace (`stg_lh_glb_sales`, `stg_lh_glb_finance`) that point to the upstream ITA/CHE gold schemas. `dependencies.yml` is kept for project-level Mesh governance and dbt Cloud's project registry.
+- This pattern ("Fabric-compatible dbt Mesh") is the recommended approach for multi-workspace Fabric + dbt Cloud setups until Fabric supports cross-workspace SQL natively.
 
 ## Repository structure
 
