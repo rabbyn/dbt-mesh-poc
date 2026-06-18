@@ -26,10 +26,10 @@ models:
         data_type: varchar(3)
       - name: created_at
         description: "Timestamp when the client record was originally created in the source system"
-        data_type: datetime2
+        data_type: datetime2(6)
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)
 
   - name: dim_branch
     description: "Branch dimension - Switzerland"
@@ -59,7 +59,7 @@ models:
         data_type: bit
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)
 
   - name: fct_sales_order
     description: "Sales order fact table - Switzerland"
@@ -97,4 +97,4 @@ models:
         data_type: varchar(3)
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)

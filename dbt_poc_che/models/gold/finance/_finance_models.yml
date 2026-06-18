@@ -29,7 +29,7 @@ models:
         data_type: bit
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)
 
   - name: dim_cost_center
     description: "Cost center dimension - Switzerland"
@@ -59,7 +59,7 @@ models:
         data_type: bit
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)
 
   - name: fct_journal_entry
     description: "Journal entry fact table - Switzerland"
@@ -100,4 +100,4 @@ models:
         data_type: varchar(3)
       - name: _loaded_at
         description: "UTC timestamp when the record was last loaded into this layer"
-        data_type: datetime2
+        data_type: datetime2(6)
