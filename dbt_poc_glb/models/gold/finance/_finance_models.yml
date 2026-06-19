@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dim_account_global
-    description: "Global account dimension - union of all countries"
+    description: "Global account dimension - union of country gold dim_account models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: account_id
         description: "Unique identifier for the general ledger account within its source country (not globally unique alone — use with source_country)"
@@ -29,7 +29,7 @@ models:
         data_type: datetime2(6)
 
   - name: dim_cost_center_global
-    description: "Global cost center dimension - union of all countries"
+    description: "Global cost center dimension - union of country gold dim_cost_center models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: cost_center_id
         description: "Unique identifier for the cost center within its source country (not globally unique alone — use with source_country)"
@@ -56,7 +56,7 @@ models:
         data_type: datetime2(6)
 
   - name: fct_journal_entry_global
-    description: "Global journal entry fact table - union of all countries"
+    description: "Global journal entry fact table - union of country gold fct_journal_entry models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: entry_id
         description: "Unique identifier for the journal entry line within its source country (not globally unique alone — use with source_country)"

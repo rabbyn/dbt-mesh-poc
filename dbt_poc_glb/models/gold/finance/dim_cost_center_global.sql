@@ -9,6 +9,7 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
+-- Source: dbt_poc_ita project (ITA Fabric workspace, gold.dim_cost_center)
 from {{ ref('dbt_poc_ita', 'dim_cost_center') }}
 
 union all
@@ -21,4 +22,5 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
+-- Source: dbt_poc_che project (CHE Fabric workspace, gold.dim_cost_center)
 from {{ ref('dbt_poc_che', 'dim_cost_center') }}

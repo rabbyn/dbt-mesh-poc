@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dim_client_global
-    description: "Global client dimension - union of all countries"
+    description: "Global client dimension - union of country gold dim_client models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: client_id
         description: "Unique identifier for the client within its source country (not globally unique alone — use with source_country)"
@@ -29,7 +29,7 @@ models:
         data_type: datetime2(6)
 
   - name: dim_branch_global
-    description: "Global branch dimension - union of all countries"
+    description: "Global branch dimension - union of country gold dim_branch models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: branch_id
         description: "Unique identifier for the branch office within its source country (not globally unique alone — use with source_country)"
@@ -56,7 +56,7 @@ models:
         data_type: datetime2(6)
 
   - name: fct_sales_order_global
-    description: "Global sales order fact table - union of all countries"
+    description: "Global sales order fact table - union of country gold fct_sales_order models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
     columns:
       - name: order_id
         description: "Unique identifier for the sales order within its source country (not globally unique alone — use with source_country)"
