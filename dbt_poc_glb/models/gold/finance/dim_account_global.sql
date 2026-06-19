@@ -1,9 +1,9 @@
 {{ config(materialized='table') }}
 
 -- Global Gold: Union of Italy and Switzerland account dimensions
--- Fabric Mesh: source() routes through GLB-workspace Shortcuts to ITA/CHE gold schemas.
--- Cross-project ref() is not used because Fabric blocks cross-workspace SQL;
--- project dependencies are still declared in dependencies.yml for Mesh governance.
+-- Fabric Mesh: cross-project ref() drives end-to-end lineage; the ref() override
+-- macro remaps the compiled relation to the local OneLake Shortcut so the SQL runs
+-- inside the GLB workspace. See macros/ref.sql.
 select
     account_id,
     account_name,
@@ -12,7 +12,7 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('ita_gold_finance', 'dim_account') }}
+from {{ ref('dbt_poc_ita', 'dim_account') }}
 
 union all
 
@@ -24,4 +24,4 @@ select
     source_country,
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ source('che_gold_finance', 'dim_account') }}
+from {{ ref('dbt_poc_che', 'dim_account') }}
