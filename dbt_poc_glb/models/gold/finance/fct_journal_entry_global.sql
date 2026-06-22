@@ -12,7 +12,7 @@ select
     description,
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ ref('dbt_poc_ita', 'fct_journal_entry') }}
+from {{ source('gold_ita_finance', 'fct_journal_entry') }}
 
 union all
 
@@ -27,4 +27,4 @@ select
     description,
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ ref('dbt_poc_che', 'fct_journal_entry') }}
+from {{ source('gold_che_finance', 'fct_journal_entry') }}

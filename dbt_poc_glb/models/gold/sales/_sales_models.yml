@@ -1,5 +1,25 @@
 version: 2
 
+sources:
+  - name: gold_che_sales
+    description: "Gold sales domain data from Switzerlad"
+    database: stg_lh_glb_sales
+    schema: gold_che_sales
+    tables:
+      - name: dim_branch
+      - name: dim_client
+      - name: fct_sales_order
+    
+    
+  - name: gold_ita_sales
+    description: "Gold sales domain data from Italy"
+    database: stg_lh_glb_sales
+    schema: gold_ita_sales
+    tables:   
+      - name: dim_branch
+      - name: dim_client
+      - name: fct_sales_order
+
 models:
   - name: dim_client_global
     description: "Global client dimension - union of all countries"

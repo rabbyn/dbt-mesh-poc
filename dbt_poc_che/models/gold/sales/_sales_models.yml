@@ -7,6 +7,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: sales
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: client_id
         description: "Unique identifier for the client (primary key)"
@@ -37,6 +43,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: sales
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: branch_id
         description: "Unique identifier for the branch office (primary key)"
@@ -67,6 +79,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: sales
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: order_id
         description: "Unique identifier for the sales order (primary key)"

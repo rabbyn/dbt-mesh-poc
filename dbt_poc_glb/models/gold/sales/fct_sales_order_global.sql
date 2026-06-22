@@ -11,7 +11,7 @@ select
     order_status,
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ ref('dbt_poc_ita', 'fct_sales_order') }}
+from {{ source('gold_ita_sales', 'fct_sales_order') }}
 
 union all
 
@@ -25,4 +25,4 @@ select
     order_status,
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
-from {{ ref('dbt_poc_che', 'fct_sales_order') }}
+from {{ source('gold_che_sales', 'fct_sales_order') }}
