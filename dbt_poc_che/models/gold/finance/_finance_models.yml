@@ -7,6 +7,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: finance
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: account_id
         description: "Unique identifier for the general ledger account (primary key)"
@@ -37,6 +43,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: finance
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: cost_center_id
         description: "Unique identifier for the cost center (primary key)"
@@ -67,6 +79,12 @@ models:
     config:
       contract:
         enforced: true
+    meta:
+      owner: Switzerland-data-team
+      domain: finance
+      steward: data-platform
+      certified: true
+      data_product: true
     columns:
       - name: entry_id
         description: "Unique identifier for the journal entry line (primary key)"

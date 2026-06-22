@@ -1,5 +1,25 @@
 version: 2
 
+sources:
+  - name: gold_che_finance
+    description: "Gold finance domain data from Switzerlad"
+    database: stg_lh_glb_finance
+    schema: gold_che_finance
+    tables:
+      - name: dim_account
+      - name: dim_cost_center
+      - name: fct_journal_entry
+    
+    
+  - name: gold_ita_finance
+    description: "Gold finance domain data from Italy"
+    database: stg_lh_glb_finance
+    schema: gold_ita_finance
+    tables:
+      - name: dim_account
+      - name: dim_cost_center
+      - name: fct_journal_entry
+
 models:
   - name: dim_account_global
     description: "Global account dimension - union of country gold dim_account models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."
