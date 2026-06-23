@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dim_account
+  - name: dim_account_ita
     description: "Account dimension - Italy"
     access: public
     config:
@@ -37,7 +37,7 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: dim_cost_center
+  - name: dim_cost_center_ita
     description: "Cost center dimension - Italy"
     access: public
     config:
@@ -73,7 +73,7 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: fct_journal_entry
+  - name: fct_journal_entry_ita
     description: "Journal entry fact table - Italy"
     access: public
     config:

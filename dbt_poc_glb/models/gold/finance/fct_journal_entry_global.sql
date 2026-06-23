@@ -13,7 +13,7 @@ select
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_ita project (ITA Fabric workspace, gold.fct_journal_entry)
-from {{ source('gold_ita_finance', 'fct_journal_entry') }}
+from {{ source('mesh_fin', 'fct_journal_entry_ita') }}
 
 union all
 
@@ -29,4 +29,4 @@ select
     source_country,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_che project (CHE Fabric workspace, gold.fct_journal_entry)
-from {{ source('gold_che_finance', 'fct_journal_entry') }}
+from {{ source('mesh_fin', 'fct_journal_entry') }}

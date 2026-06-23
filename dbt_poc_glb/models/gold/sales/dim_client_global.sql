@@ -10,7 +10,7 @@ select
     created_at,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_ita project (ITA Fabric workspace, gold.dim_client)
-from {{ source('gold_ita_sales', 'dim_client') }}
+from {{ source('mesh_sales', 'dim_client_ita') }}
 
 union all
 
@@ -23,4 +23,4 @@ select
     created_at,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_che project (CHE Fabric workspace, gold.dim_client)
-from {{ source('gold_che_sales', 'dim_client') }}
+from {{ source('mesh_sales', 'dim_client') }}

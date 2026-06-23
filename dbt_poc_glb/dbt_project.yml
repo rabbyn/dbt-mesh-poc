@@ -13,6 +13,10 @@ clean-targets: ["target", "dbt_packages"]
 
 models:
   dbt_poc_glb:
+
+    aggregation:
+      +schema: aggregation
+
     gold:
       +materialized: table
       +tags: []

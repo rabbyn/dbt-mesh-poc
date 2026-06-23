@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dim_client
+  - name: dim_client_ita
     description: "Client dimension - Italy"
     access: public
     config:
@@ -37,7 +37,7 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: dim_branch
+  - name: dim_branch_ita
     description: "Branch dimension - Italy"
     access: public
     config:
@@ -73,7 +73,7 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: fct_sales_order
+  - name: fct_sales_order_ita
     description: "Sales order fact table - Italy"
     access: public
     config:
