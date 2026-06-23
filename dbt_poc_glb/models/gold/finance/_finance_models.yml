@@ -1,24 +1,17 @@
 version: 2
 
 sources:
-  - name: gold_che_finance
-    description: "Gold finance domain data from Switzerlad"
-    database: stg_lh_glb_finance
-    schema: gold_che_finance
+  - name: mesh_fin
+
+    schema: aggregation
+
     tables:
       - name: dim_account
       - name: dim_cost_center
       - name: fct_journal_entry
-    
-    
-  - name: gold_ita_finance
-    description: "Gold finance domain data from Italy"
-    database: stg_lh_glb_finance
-    schema: gold_ita_finance
-    tables:
-      - name: dim_account
-      - name: dim_cost_center
-      - name: fct_journal_entry
+      - name: dim_account_ita
+      - name: dim_cost_center_ita
+      - name: fct_journal_entry_ita
 
 models:
   - name: dim_account_global
