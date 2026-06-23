@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: mesh_sales
-
+    database: stg_lh_glb_sales
     schema: aggregation
 
     tables:
