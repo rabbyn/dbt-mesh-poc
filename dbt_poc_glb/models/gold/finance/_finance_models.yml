@@ -1,14 +1,20 @@
 version: 2
 
 sources:
-  - name: mesh_fin
+  - name: mesh_fin_che
     database: stg_lh_glb_finance
-    schema: aggregation
+    schema: gold_che_finance
 
     tables:
       - name: dim_account
       - name: dim_cost_center
       - name: fct_journal_entry
+
+  - name: mesh_fin_ita
+    database: stg_lh_glb_finance
+    schema: gold_ita_finance
+
+    tables:
       - name: dim_account_ita
       - name: dim_cost_center_ita
       - name: fct_journal_entry_ita
