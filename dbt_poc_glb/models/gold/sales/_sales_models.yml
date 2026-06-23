@@ -1,14 +1,19 @@
 version: 2
 
 sources:
-  - name: mesh_sales
+  - name: mesh_sales_che
     database: stg_lh_glb_sales
-    schema: aggregation
+    schema: gold_che_sales
 
     tables:
       - name: dim_branch
       - name: dim_client
       - name: fct_sales_order
+    
+  - name: mesh_sales_ita
+    database: stg_lh_glb_sales
+    schema: gold_ita_sales
+    tables:
       - name: dim_branch_ita
       - name: dim_client_ita
       - name: fct_sales_order_ita
