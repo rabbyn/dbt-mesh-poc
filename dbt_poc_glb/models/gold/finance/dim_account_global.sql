@@ -13,7 +13,7 @@ select
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_ita project (ITA Fabric workspace, gold.dim_account)
-from {{ source('mesh_fin_ita', 'dim_account_ita') }}
+from {{ ref('dbt_poc_ita', 'dim_account') }}
 
 union all
 
@@ -26,4 +26,4 @@ select
     is_active,
     CAST(SYSUTCDATETIME() AS datetime2(6)) as _loaded_at
 -- Source: dbt_poc_che project (CHE Fabric workspace, gold.dim_account)
-from {{ source('mesh_fin_che', 'dim_account') }}
+from {{ ref('dbt_poc_che', 'dim_account') }}

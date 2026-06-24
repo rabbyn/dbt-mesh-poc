@@ -1,18 +1,12 @@
 version: 2
 
 models:
-  - name: dim_client_ita
+  - name: dim_client
     description: "Client dimension - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: sales
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: client_id
         description: "Unique identifier for the client (primary key)"
@@ -37,18 +31,12 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: dim_branch_ita
+  - name: dim_branch
     description: "Branch dimension - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: sales
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: branch_id
         description: "Unique identifier for the branch office (primary key)"
@@ -73,18 +61,12 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: fct_sales_order_ita
+  - name: fct_sales_order
     description: "Sales order fact table - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: sales
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: order_id
         description: "Unique identifier for the sales order (primary key)"

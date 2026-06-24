@@ -1,23 +1,5 @@
 version: 2
 
-sources:
-  - name: mesh_sales_che
-    database: stg_lh_glb_sales
-    schema: gold_che_sales
-
-    tables:
-      - name: dim_branch
-      - name: dim_client
-      - name: fct_sales_order
-    
-  - name: mesh_sales_ita
-    database: stg_lh_glb_sales
-    schema: gold_ita_sales
-    tables:
-      - name: dim_branch_ita
-      - name: dim_client_ita
-      - name: fct_sales_order_ita
-
 models:
   - name: dim_client_global
     description: "Global client dimension - union of country gold dim_client models. Sources: dbt_poc_ita (ITA Fabric workspace) and dbt_poc_che (CHE Fabric workspace), referenced cross-project via ref()."

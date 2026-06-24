@@ -1,18 +1,12 @@
 version: 2
 
 models:
-  - name: dim_account_ita
+  - name: dim_account
     description: "Account dimension - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: finance
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: account_id
         description: "Unique identifier for the general ledger account (primary key)"
@@ -37,18 +31,12 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: dim_cost_center_ita
+  - name: dim_cost_center
     description: "Cost center dimension - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: finance
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: cost_center_id
         description: "Unique identifier for the cost center (primary key)"
@@ -73,18 +61,12 @@ models:
         description: "UTC timestamp when the record was last loaded into this layer"
         data_type: datetime2(6)
 
-  - name: fct_journal_entry_ita
+  - name: fct_journal_entry
     description: "Journal entry fact table - Italy"
     access: public
     config:
       contract:
         enforced: true
-    meta:
-      owner: Italy-data-team
-      domain: finance
-      steward: data-platform
-      certified: true
-      data_product: true
     columns:
       - name: entry_id
         description: "Unique identifier for the journal entry line (primary key)"
