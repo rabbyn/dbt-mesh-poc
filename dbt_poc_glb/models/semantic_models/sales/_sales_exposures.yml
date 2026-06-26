@@ -22,8 +22,9 @@ exposures:
       Power BI report monitoring global sales performance across the CHE and ITA
       country entities. Built on the Fabric semantic model sem_sales_monitoring,
       which is sourced from the dbt_poc_glb global gold models.
+      
       Fabric workspace : EMEA_GDP_DBT_POC_GLB (269e9cc7-522f-4cf9-95cc-24c930c0a054)
-      Report item GUID : 1adc147b-cce0-465d-b46e-66b09997c06d
+      Report item      : rpt_sales_monitoring (1adc147b-cce0-465d-b46e-66b09997c06d)
       Semantic model   : sem_sales_monitoring (f7d818a6-df5c-4359-8fdd-3a4c66af2ef3)
 
     url: https://app.powerbi.com/groups/269e9cc7-522f-4cf9-95cc-24c930c0a054/reports/1adc147b-cce0-465d-b46e-66b09997c06d
