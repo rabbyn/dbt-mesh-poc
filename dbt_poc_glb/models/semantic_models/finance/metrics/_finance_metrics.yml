@@ -1,0 +1,136 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# dbt MetricFlow – Metrics for the Global Finance / Cost domain
+# Mirrors all measures in Fabric Semantic Model: sem_cost_monitoring
+# (workspace EMEA_GDP_DBT_POC_GLB, GUID 957d5b45-f19f-4cda-8b41-57c011a92b94)
+#
+# Measure mapping (PBI → dbt metric):
+#   Total Debit             → total_debit
+#   Total Credit            → total_credit
+#   Net Amount              → net_amount
+#   Total Entries           → total_entries
+#   Distinct Accounts       → distinct_accounts
+#   Distinct Cost Centers   → distinct_cost_centers
+#   Avg Entry Amount        → avg_entry_amount
+#   Active Cost Centers     → active_cost_centers
+#   Net per Cost Center     → net_per_cost_center
+#   Debit MTD               → debit_mtd
+#   Debit YTD               → debit_ytd
+#   Debit vs Prior Month    → debit_prior_month
+#
+# NOTE: cumulative metrics use the non-deprecated
+#       type_params.cumulative_type_params.grain_to_date nesting.
+# ─────────────────────────────────────────────────────────────────────────────
+
+metrics:
+
+  # ── Core KPIs ──────────────────────────────────────────────────────────────
+
+  - name: total_debit
+    label: "Total Debit"
+    description: "Total debit amount across all journal entries (gross spend/cost)."
+    type: simple
+    type_params:
+      measure: total_debit_amount
+
+  - name: total_credit
+    label: "Total Credit"
+    description: "Total credit amount across all journal entries."
+    type: simple
+    type_params:
+      measure: total_credit_amount
+
+  - name: net_amount
+    label: "Net Amount"
+    description: "Net booked amount (Total Debit - Total Credit)."
+    type: derived
+    type_params:
+      expr: total_debit - total_credit
+      metrics:
+        - name: total_debit
+        - name: total_credit
+
+  - name: total_entries
+    label: "Total Entries"
+    description: "Total number of distinct journal entry lines."
+    type: simple
+    type_params:
+      measure: entry_count
+
+  - name: distinct_accounts
+    label: "Distinct Accounts"
+    description: "Number of distinct GL accounts with at least one entry."
+    type: simple
+    type_params:
+      measure: distinct_account_count
+
+  - name: distinct_cost_centers
+    label: "Distinct Cost Centers"
+    description: "Number of distinct cost centers with at least one entry."
+    type: simple
+    type_params:
+      measure: distinct_cost_center_count
+
+  - name: avg_entry_amount
+    label: "Avg Entry Amount"
+    description: "Average net amount per journal entry (Net Amount / Total Entries)."
+    type: derived
+    type_params:
+      expr: net_amount / total_entries
+      metrics:
+        - name: net_amount
+        - name: total_entries
+
+  # ── Cost Center KPIs ───────────────────────────────────────────────────────
+
+  - name: active_cost_centers
+    label: "Active Cost Centers"
+    description: >
+      Number of distinct cost centers flagged as active (is_active = 1)
+      that have at least one entry. Resolved via entity join to sem_dim_cost_center.
+    type: simple
+    type_params:
+      measure: distinct_cost_center_count
+    filter: "{{ Dimension('cost_center__is_active') }} = 1"
+
+  - name: net_per_cost_center
+    label: "Net per Cost Center"
+    description: "Average net amount per cost center (Net Amount / Distinct Cost Centers)."
+    type: derived
+    type_params:
+      expr: net_amount / distinct_cost_centers
+      metrics:
+        - name: net_amount
+        - name: distinct_cost_centers
+
+  # ── Time Intelligence ───────────────────────────────────────────────────────
+
+  - name: debit_mtd
+    label: "Debit MTD"
+    description: "Month-to-date cumulative debit amount."
+    type: cumulative
+    type_params:
+      measure: total_debit_amount
+      cumulative_type_params:
+        grain_to_date: month
+
+  - name: debit_ytd
+    label: "Debit YTD"
+    description: "Year-to-date cumulative debit amount."
+    type: cumulative
+    type_params:
+      measure: total_debit_amount
+      cumulative_type_params:
+        grain_to_date: year
+
+  - name: debit_prior_month
+    label: "Debit - Prior Month"
+    description: "Total debit for the equivalent period shifted back one month (MoM baseline)."
+    type: derived
+    type_params:
+      expr: prior_month_debit
+      metrics:
+        - name: total_debit
+          alias: prior_month_debit
+          offset_window: 1 month

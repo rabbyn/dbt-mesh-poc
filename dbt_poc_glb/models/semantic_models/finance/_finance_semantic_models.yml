@@ -1,0 +1,163 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# dbt MetricFlow – Semantic Models for the Global Finance / Cost domain
+# Workspace  : EMEA_GDP_DBT_POC_GLB
+# PBI model  : sem_cost_monitoring  (957d5b45-f19f-4cda-8b41-57c011a92b94)
+#
+# Lineage chain (end-to-end):
+#   dbt_poc_ita / dbt_poc_che (silver stg_*)
+#     └─> dbt_poc_ita / dbt_poc_che (gold fct/dim)
+#           └─> dbt_poc_glb (gold *_global)   ← these semantic models
+#                 └─> Fabric Semantic Model sem_cost_monitoring
+#                       └─> Power BI reports
+# ─────────────────────────────────────────────────────────────────────────────
+
+semantic_models:
+
+  # ── Fact ───────────────────────────────────────────────────────────────────
+  - name: sem_fct_journal_entry
+    label: "Global Journal Entries"
+    description: >
+      Semantic model on the global journal entry fact table.
+      Grain: one row per journal entry line.
+      Source model: fct_journal_entry_global (union of CHE + ITA gold layers).
+    model: ref('fct_journal_entry_global')
+    defaults:
+      agg_time_dimension: entry_date
+
+    entities:
+      - name: entry
+        type: primary
+        expr: entry_id
+      - name: account
+        type: foreign
+        expr: account_id
+      - name: cost_center
+        type: foreign
+        expr: cost_center_id
+
+    dimensions:
+      - name: entry_date
+        type: time
+        label: "Entry Date"
+        description: "Business date on which the accounting entry was posted."
+        type_params:
+          time_granularity: day
+
+      - name: currency_code
+        type: categorical
+        label: "Currency Code"
+        description: "ISO 4217 three-letter currency code for the amounts."
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
+
+    measures:
+      - name: total_debit_amount
+        label: "Total Debit Amount"
+        description: "Sum of all debit amounts (gross spend/cost)."
+        agg: sum
+        expr: debit_amount
+
+      - name: total_credit_amount
+        label: "Total Credit Amount"
+        description: "Sum of all credit amounts."
+        agg: sum
+        expr: credit_amount
+
+      - name: entry_count
+        label: "Entry Count"
+        description: "Count of distinct journal entry lines."
+        agg: count_distinct
+        expr: entry_id
+
+      - name: distinct_account_count
+        label: "Distinct Account Count"
+        description: "Count of distinct GL accounts with at least one entry."
+        agg: count_distinct
+        expr: account_id
+
+      - name: distinct_cost_center_count
+        label: "Distinct Cost Center Count"
+        description: "Count of distinct cost centers with at least one entry."
+        agg: count_distinct
+        expr: cost_center_id
+
+  # ── Account dimension ──────────────────────────────────────────────────────
+  - name: sem_dim_account
+    label: "Global Account Dimension"
+    description: >
+      Semantic model on the global GL account dimension.
+      Source model: dim_account_global (union of CHE + ITA gold layers).
+    model: ref('dim_account_global')
+
+    entities:
+      - name: account
+        type: primary
+        expr: account_id
+
+    dimensions:
+      - name: account_name
+        type: categorical
+        label: "Account Name"
+
+      - name: account_type
+        type: categorical
+        label: "Account Type"
+        description: "High-level classification of the account (e.g., ASSET, LIABILITY, REVENUE, EXPENSE)."
+
+      - name: account_category
+        type: categorical
+        label: "Account Category"
+        description: "Sub-category for grouping accounts within a type (e.g., CURRENT_ASSET, OPERATING_EXPENSE)."
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
+
+      - name: is_active
+        type: categorical
+        label: "Is Active"
+        description: "Whether the account is currently active (1 = active, 0 = inactive)."
+
+  # ── Cost center dimension ──────────────────────────────────────────────────
+  - name: sem_dim_cost_center
+    label: "Global Cost Center Dimension"
+    description: >
+      Semantic model on the global cost center dimension.
+      Source model: dim_cost_center_global (union of CHE + ITA gold layers).
+    model: ref('dim_cost_center_global')
+
+    entities:
+      - name: cost_center
+        type: primary
+        expr: cost_center_id
+
+    dimensions:
+      - name: cost_center_name
+        type: categorical
+        label: "Cost Center Name"
+
+      - name: department
+        type: categorical
+        label: "Department"
+        description: "Business department the cost center belongs to."
+
+      - name: manager_name
+        type: categorical
+        label: "Manager Name"
+        description: "Full name of the person responsible for the cost center."
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
+
+      - name: is_active
+        type: categorical
+        label: "Is Active"
+        description: "Whether the cost center is currently active (1 = active, 0 = inactive)."
