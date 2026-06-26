@@ -1,0 +1,18 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MetricFlow time spine configuration (dbt 1.9+ YAML form)
+# Registers metricflow_time_spine as the DAY-grain time spine for the project.
+# Required by cumulative metrics (sales_mtd, sales_ytd) and offset metrics
+# (sales_prior_month) defined in _sales_metrics.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
+models:
+  - name: metricflow_time_spine
+    description: "Daily time spine (2020-2029) used by the dbt Semantic Layer for time-based metric calculations."
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        description: "One row per calendar day at DAY granularity."
+        granularity: day

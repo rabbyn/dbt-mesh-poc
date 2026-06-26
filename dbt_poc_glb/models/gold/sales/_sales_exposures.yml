@@ -1,0 +1,39 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# dbt Exposures – downstream BI consumers of the Global Sales semantic layer
+# Extends end-to-end lineage from dbt models → Fabric semantic model → PBI report.
+#
+# Lineage tail:
+#   dbt_poc_glb gold *_global  →  MetricFlow semantic models / metrics
+#     →  Fabric Semantic Model  sem_sales_monitoring
+#           (f7d818a6-df5c-4359-8fdd-3a4c66af2ef3)
+#         →  Power BI Report     rpt_sales_monitoring   ← this exposure
+#               (1adc147b-cce0-465d-b46e-66b09997c06d)
+# ─────────────────────────────────────────────────────────────────────────────
+
+exposures:
+
+  - name: rpt_sales_monitoring
+    label: "Sales Monitoring Report"
+    type: dashboard
+    maturity: high
+    description: >
+      Power BI report monitoring global sales performance across the CHE and ITA
+      country entities. Built on the Fabric semantic model sem_sales_monitoring,
+      which is sourced from the dbt_poc_glb global gold models.
+      Fabric workspace : EMEA_GDP_DBT_POC_GLB (269e9cc7-522f-4cf9-95cc-24c930c0a054)
+      Report item GUID : 1adc147b-cce0-465d-b46e-66b09997c06d
+      Semantic model   : sem_sales_monitoring (f7d818a6-df5c-4359-8fdd-3a4c66af2ef3)
+
+    url: https://app.powerbi.com/groups/269e9cc7-522f-4cf9-95cc-24c930c0a054/reports/1adc147b-cce0-465d-b46e-66b09997c06d
+
+    owner:
+      name: Global Data Platform – Sales Domain
+      email: guillaume.berthier@emea.adecco.net
+
+    # The report consumes the global gold models that feed sem_sales_monitoring.
+    depends_on:
+      - ref('fct_sales_order_global')
+      - ref('dim_branch_global')
+      - ref('dim_client_global')
