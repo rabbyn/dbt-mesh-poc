@@ -124,7 +124,8 @@ metrics:
     type: cumulative
     type_params:
       measure: total_sales_amount
-      grain_to_date: month
+      cumulative_type_params:
+        grain_to_date: month
 
   - name: sales_ytd
     label: "Sales YTD"
@@ -132,7 +133,8 @@ metrics:
     type: cumulative
     type_params:
       measure: total_sales_amount
-      grain_to_date: year
+      cumulative_type_params:
+        grain_to_date: year
 
   - name: sales_prior_month
     label: "Sales - Prior Month"
