@@ -1,0 +1,146 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# dbt MetricFlow – Metrics for the Global Sales domain
+# Mirrors all measures in Fabric Semantic Model: sem_sales_monitoring
+# (workspace EMEA_GDP_DBT_POC_GLB, GUID f7d818a6-df5c-4359-8fdd-3a4c66af2ef3)
+#
+# Measure mapping (PBI → dbt metric):
+#   Total Sales              → total_sales
+#   Total Orders             → total_orders
+#   Distinct Clients         → distinct_clients
+#   Avg Order Value          → avg_order_value
+#   Avg Sales per Client     → avg_sales_per_client   (fixes broken PBI measure)
+#   Completed Orders         → completed_orders
+#   Cancelled Orders         → cancelled_orders
+#   Order Completion Rate    → order_completion_rate
+#   Active Branches          → active_branches
+#   Sales per Active Branch  → sales_per_active_branch
+#   Sales MTD                → sales_mtd
+#   Sales YTD                → sales_ytd
+#   Sales vs Prior Month     → sales_prior_month
+# ─────────────────────────────────────────────────────────────────────────────
+
+metrics:
+
+  # ── Core KPIs ──────────────────────────────────────────────────────────────
+
+  - name: total_sales
+    label: "Total Sales"
+    description: "Total sales amount across all orders."
+    type: simple
+    type_params:
+      measure: total_sales_amount
+
+  - name: total_orders
+    label: "Total Orders"
+    description: "Total number of distinct sales orders."
+    type: simple
+    type_params:
+      measure: order_count
+
+  - name: distinct_clients
+    label: "Distinct Clients"
+    description: "Number of unique clients who placed at least one order."
+    type: simple
+    type_params:
+      measure: distinct_client_count
+
+  - name: avg_order_value
+    label: "Avg Order Value"
+    description: "Average monetary value per order (Total Sales / Total Orders)."
+    type: derived
+    type_params:
+      expr: total_sales / total_orders
+      metrics:
+        - name: total_sales
+        - name: total_orders
+
+  - name: avg_sales_per_client
+    label: "Avg Sales per Client"
+    description: >
+      Average sales amount per distinct client (Total Sales / Distinct Clients).
+      Mirrors the corrected avg_sales_client measure in sem_sales_monitoring.
+    type: derived
+    type_params:
+      expr: total_sales / distinct_clients
+      metrics:
+        - name: total_sales
+        - name: distinct_clients
+
+  # ── Order Status KPIs ──────────────────────────────────────────────────────
+
+  - name: completed_orders
+    label: "Completed Orders"
+    description: "Number of orders with order_status = 'completed'."
+    type: simple
+    type_params:
+      measure: completed_order_count
+
+  - name: cancelled_orders
+    label: "Cancelled Orders"
+    description: "Number of orders with order_status = 'cancelled'."
+    type: simple
+    type_params:
+      measure: cancelled_order_count
+
+  - name: order_completion_rate
+    label: "Order Completion Rate"
+    description: "Percentage of orders that are completed (Completed Orders / Total Orders)."
+    type: derived
+    type_params:
+      expr: completed_orders / total_orders
+      metrics:
+        - name: completed_orders
+        - name: total_orders
+
+  # ── Branch KPIs ─────────────────────────────────────────────────────────────
+
+  - name: active_branches
+    label: "Active Branches"
+    description: >
+      Number of distinct branches flagged as active (is_active = 1)
+      that have at least one order. Resolved via entity join to sem_dim_branch.
+    type: simple
+    type_params:
+      measure: distinct_branch_count
+    filter: "{{ Dimension('branch__is_active') }} = 1"
+
+  - name: sales_per_active_branch
+    label: "Sales per Active Branch"
+    description: "Average sales amount per active branch (Total Sales / Active Branches)."
+    type: derived
+    type_params:
+      expr: total_sales / active_branches
+      metrics:
+        - name: total_sales
+        - name: active_branches
+
+  # ── Time Intelligence ───────────────────────────────────────────────────────
+
+  - name: sales_mtd
+    label: "Sales MTD"
+    description: "Month-to-date cumulative sales amount."
+    type: cumulative
+    type_params:
+      measure: total_sales_amount
+      grain_to_date: month
+
+  - name: sales_ytd
+    label: "Sales YTD"
+    description: "Year-to-date cumulative sales amount."
+    type: cumulative
+    type_params:
+      measure: total_sales_amount
+      grain_to_date: year
+
+  - name: sales_prior_month
+    label: "Sales - Prior Month"
+    description: "Total sales for the equivalent period shifted back one month (MoM baseline)."
+    type: derived
+    type_params:
+      expr: prior_month_sales
+      metrics:
+        - name: total_sales
+          alias: prior_month_sales
+          offset_window: 1 month

@@ -1,0 +1,167 @@
+version: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# dbt MetricFlow – Semantic Models for the Global Sales domain
+# Workspace  : EMEA_GDP_DBT_POC_GLB
+# PBI model  : sem_sales_monitoring  (f7d818a6-df5c-4359-8fdd-3a4c66af2ef3)
+#
+# Lineage chain (end-to-end):
+#   dbt_poc_ita / dbt_poc_che (silver stg_*)
+#     └─> dbt_poc_ita / dbt_poc_che (gold fct/dim)
+#           └─> dbt_poc_glb (gold *_global)   ← these semantic models
+#                 └─> Fabric Semantic Model sem_sales_monitoring
+#                       └─> Power BI reports
+# ─────────────────────────────────────────────────────────────────────────────
+
+semantic_models:
+
+  # ── Fact ───────────────────────────────────────────────────────────────────
+  - name: sem_fct_sales_order
+    label: "Global Sales Orders"
+    description: >
+      Semantic model on the global sales order fact table.
+      Grain: one row per sales order.
+      Source model: fct_sales_order_global (union of CHE + ITA gold layers).
+    model: ref('fct_sales_order_global')
+    defaults:
+      agg_time_dimension: order_date
+
+    entities:
+      - name: order
+        type: primary
+        expr: order_id
+      - name: client
+        type: foreign
+        expr: client_id
+      - name: branch
+        type: foreign
+        expr: branch_id
+
+    dimensions:
+      - name: order_date
+        type: time
+        label: "Order Date"
+        description: "Business date when the sales order was placed."
+        type_params:
+          time_granularity: day
+
+      - name: order_status
+        type: categorical
+        label: "Order Status"
+        description: "Lifecycle status of the order (e.g., OPEN, CONFIRMED, CLOSED, CANCELLED)."
+
+      - name: currency_code
+        type: categorical
+        label: "Currency Code"
+        description: "ISO 4217 three-letter currency code for the order amount."
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
+
+    measures:
+      - name: total_sales_amount
+        label: "Total Sales Amount"
+        description: "Sum of all order amounts."
+        agg: sum
+        expr: amount
+
+      - name: order_count
+        label: "Order Count"
+        description: "Count of distinct sales orders."
+        agg: count_distinct
+        expr: order_id
+
+      - name: distinct_client_count
+        label: "Distinct Client Count"
+        description: "Count of distinct clients with at least one order."
+        agg: count_distinct
+        expr: client_id
+
+      - name: distinct_branch_count
+        label: "Distinct Branch Count"
+        description: "Count of distinct branches with at least one order."
+        agg: count_distinct
+        expr: branch_id
+
+      - name: completed_order_count
+        label: "Completed Order Count"
+        description: "Number of orders with order_status = 'completed'."
+        agg: sum
+        expr: "CASE WHEN order_status = 'completed' THEN 1 ELSE 0 END"
+
+      - name: cancelled_order_count
+        label: "Cancelled Order Count"
+        description: "Number of orders with order_status = 'cancelled'."
+        agg: sum
+        expr: "CASE WHEN order_status = 'cancelled' THEN 1 ELSE 0 END"
+
+  # ── Branch dimension ───────────────────────────────────────────────────────
+  - name: sem_dim_branch
+    label: "Global Branch Dimension"
+    description: >
+      Semantic model on the global branch dimension.
+      Source model: dim_branch_global (union of CHE + ITA gold layers).
+    model: ref('dim_branch_global')
+
+    entities:
+      - name: branch
+        type: primary
+        expr: branch_id
+
+    dimensions:
+      - name: branch_name
+        type: categorical
+        label: "Branch Name"
+
+      - name: branch_city
+        type: categorical
+        label: "Branch City"
+
+      - name: branch_region
+        type: categorical
+        label: "Branch Region"
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
+
+      - name: is_active
+        type: categorical
+        label: "Is Active"
+        description: "Whether the branch is currently operational (1 = active, 0 = inactive)."
+
+  # ── Client dimension ───────────────────────────────────────────────────────
+  - name: sem_dim_client
+    label: "Global Client Dimension"
+    description: >
+      Semantic model on the global client dimension.
+      Source model: dim_client_global (union of CHE + ITA gold layers).
+    model: ref('dim_client_global')
+
+    entities:
+      - name: client
+        type: primary
+        expr: client_id
+
+    dimensions:
+      - name: client_name
+        type: categorical
+        label: "Client Name"
+
+      - name: client_type
+        type: categorical
+        label: "Client Type"
+        description: "Client segment classification (e.g., CORPORATE, SME, INDIVIDUAL)."
+
+      - name: country_code
+        type: categorical
+        label: "Country Code"
+        description: "ISO 3166-1 alpha-2 code of the client country of registration."
+
+      - name: source_country
+        type: categorical
+        label: "Source Country"
+        description: "ISO 3166-1 alpha-3 code of the originating country entity (CHE, ITA)."
